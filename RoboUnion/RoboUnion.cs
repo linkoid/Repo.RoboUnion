@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Linkoid.Repo.RoboUnion;
 
-[BepInPlugin("Linkoid.Repo.RoboUnion", "RoboUnion", "1.0")]
+[BepInPlugin("Linkoid.Repo.RoboUnion", "RoboUnion", "0.1")]
 public class RoboUnion : BaseUnityPlugin
 {
     internal static RoboUnion Instance { get; private set; } = null!;
@@ -34,6 +34,7 @@ public class RoboUnion : BaseUnityPlugin
 
     private void Start()
     {
-        new GameObject(nameof(PhotonWatchdog), typeof(PhotonWatchdog));
+        Logger.LogInfo($"Creating {nameof(PhotonWatchdog)}");
+        var photonWatchdog = new GameObject(nameof(PhotonWatchdog), typeof(PhotonWatchdog));
     }
 }
