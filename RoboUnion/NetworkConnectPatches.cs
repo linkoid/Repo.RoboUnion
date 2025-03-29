@@ -38,7 +38,7 @@ internal static class NetworkConnectPatches
         return head.InstructionEnumeration();
     }
 
-    static int TryJoiningRoom_GetMaxPlayers()
+    internal static int TryJoiningRoom_GetMaxPlayers()
     {
         var maxPlayers = RoboUnion.ConfigModel.MaxPlayers.Value;
         if (PhotonServerPlayerLimit.HasValue && maxPlayers > PhotonServerPlayerLimit.Value)

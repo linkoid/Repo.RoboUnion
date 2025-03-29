@@ -18,7 +18,8 @@ internal class PhotonWatchdog : MonoBehaviour
     static int messageRecieverRunningCount = 0;
     static int messageRecieverPreviousCount = 0;
 
-    static int maxEstimatedMessages = 0;
+    static int messagesRoomEstimate = 0;
+    static int messagesRoomEstimateMax = 0;
 
     void Awake()
     {
@@ -32,6 +33,7 @@ internal class PhotonWatchdog : MonoBehaviour
         if (Time.realtimeSinceStartup - lastUpdate > 1)
         {
             UpdateMessageSample();
+            EstimateMessages();
             lastUpdate = Time.realtimeSinceStartup;
         }
     }
@@ -45,51 +47,73 @@ internal class PhotonWatchdog : MonoBehaviour
         messageRecieverRunningCount = 0;
     }
 
-    void OnGUI()
+    void EstimateMessages()
     {
-        if (RoboUnion.ConfigModel.ShowMessagesPerSecond.Value)
+        messagesRoomEstimate = (messageSendPreviousCount + messageRecieverPreviousCount) * (PhotonNetwork.CurrentRoom?.PlayerCount ?? 1);
+        if (messagesRoomEstimate > messagesRoomEstimateMax)
         {
-            GUILayout.Label($"Photon Player Sent Messages/Second: {messageSendPreviousCount}");
-            GUILayout.Label($"Photon Player Sent Reciever Messages/Second: {messageRecieverPreviousCount}");
+            messagesRoomEstimateMax = messagesRoomEstimate;
+            RoboUnion.Logger.LogDebug($"New Photon Room Est. Messages/Second Max: {messagesRoomEstimateMax}");
+        }
 
-            int estimatedMessages = (messageSendPreviousCount + messageRecieverPreviousCount) * (PhotonNetwork.CurrentRoom?.PlayerCount ?? 1);
-            GUILayout.Label($"Photon Room Est. Messages/Second: {estimatedMessages}");
-
-            if (estimatedMessages > maxEstimatedMessages)
-            {
-                maxEstimatedMessages = estimatedMessages;
-            }
-            GUILayout.Label($"Photon Room Est. Messages/Second Max: {maxEstimatedMessages}");
+        if (RoboUnion.ConfigModel.LogMessagesPerSecond.Value)
+        {
+            RoboUnion.Logger.LogDebug(
+$"""
+Photon Player Sent Messages/Second: {messageSendPreviousCount}
+Photon Player Sent Reciever Messages/Second: {messageRecieverPreviousCount}
+Photon Room Est. Messages/Second: {messagesRoomEstimate}
+Photon Room Est. Messages/Second Max: {messagesRoomEstimateMax}
+"""
+            );
         }
     }
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(LoadBalancingPeer), nameof(LoadBalancingPeer.OpRaiseEvent))]
-    public static void LoadBalancingPeer_OpRaiseEvent_Postfix(bool __result, RaiseEventOptions raiseEventOptions)
+    void OnGUI()
     {
-        //RoboUnion.Logger.LogDebug($"LoadBalancingPeer_SendOperation_Postfix (__result: {__result})");
-        if (!__result) return;
+        if (!RoboUnion.ConfigModel.ShowMessagesPerSecond.Value) return;
 
-        switch (raiseEventOptions.Receivers)
-        {
-            case ReceiverGroup.Others:
-            case ReceiverGroup.All:
-                messageRecieverRunningCount += PhotonNetwork.CurrentRoom?.PlayerCount ?? 0;
-                break;
-            case ReceiverGroup.MasterClient:
-                messageRecieverRunningCount += 1;
-                break;
-        }
+        GUILayout.Label(
+$"""
+Photon Player Sent Messages/Second: {messageSendPreviousCount}
+Photon Player Sent Reciever Messages/Second: {messageRecieverPreviousCount}
+Photon Room Est. Messages/Second: {messagesRoomEstimate}
+Photon Room Est. Messages/Second Max: {messagesRoomEstimateMax}
+"""
+        );
     }
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(PhotonPeer), nameof(PhotonPeer.SendOperation),
         new Type[] { typeof(byte), typeof(ParameterDictionary), typeof(SendOptions) })]
-    public static void PhotonPeer_SendOperation_Postfix(bool __result, SendOptions sendOptions)
+    public static void PhotonPeer_SendOperation_Postfix(bool __result, ParameterDictionary operationParameters)
     {
-        //RoboUnion.Logger.LogDebug($"LoadBalancingPeer_SendOperation_Postfix (__result: {__result})");
-        if (!__result) return;
+        try
+        {
+            //RoboUnion.Logger.LogDebug($"LoadBalancingPeer_SendOperation_Postfix (__result: {__result})");
+            if (!__result) return;
 
-        messageSendRunningCount++;
+            messageSendRunningCount++;
+
+            ReceiverGroup receiverGroup;
+            if (!operationParameters.TryGetValue(ParameterCode.ReceiverGroup, out receiverGroup))
+            {
+                receiverGroup = ReceiverGroup.Others;
+            }
+            switch (receiverGroup)
+            {
+                case ReceiverGroup.Others:
+                case ReceiverGroup.All:
+                    messageRecieverRunningCount += (PhotonNetwork.CurrentRoom?.PlayerCount ?? 1) - 1;
+                    break;
+                case ReceiverGroup.MasterClient:
+                    messageRecieverRunningCount += 1;
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+            RoboUnion.Logger.LogDebug($"LoadBalancingPeer_SendOperation_Postfix Exception:\n{ex.Message}\n{ex.StackTrace}");
+        }
     }
 }

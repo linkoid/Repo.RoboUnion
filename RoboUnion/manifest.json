@@ -1,6 +1,6 @@
 {
  "name": "RoboUnion",
- "version_number": "0.1",
+ "version_number": "0.3.0",
  "website_url": "https://github.com/linkoid/Repo.RoboUnion",
  "description": "Provides options for adjusting the maximum number of players in a room",
  "dependencies": [
