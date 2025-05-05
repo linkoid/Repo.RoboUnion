@@ -96,10 +96,17 @@ Photon Room Est. Messages/Second Max: {messagesRoomEstimateMax}
             messageSendRunningCount++;
 
             ReceiverGroup receiverGroup;
-            if (!operationParameters.TryGetValue(ParameterCode.ReceiverGroup, out receiverGroup))
+            //if (operationParameters.TryGetValue(ParameterCode.ReceiverGroup, out receiverGroup))
+            if (operationParameters.TryGetValue(ParameterCode.ReceiverGroup, out object receiverGroupObject)
+                && (receiverGroupObject is ReceiverGroup || receiverGroupObject is byte))
+            {
+                receiverGroup = (ReceiverGroup)receiverGroupObject;
+            }
+            else
             {
                 receiverGroup = ReceiverGroup.Others;
             }
+
             switch (receiverGroup)
             {
                 case ReceiverGroup.Others:
@@ -113,7 +120,13 @@ Photon Room Est. Messages/Second Max: {messagesRoomEstimateMax}
         }
         catch (Exception ex)
         {
-            RoboUnion.Logger.LogDebug($"LoadBalancingPeer_SendOperation_Postfix Exception:\n{ex.Message}\n{ex.StackTrace}");
+            string exceptionMessage = $"LoadBalancingPeer_SendOperation_Postfix Exception:\n{ex.Message}\n{ex.StackTrace}";
+            if (exceptionMessage != lastExceptionMessage)
+            {
+                RoboUnion.Logger.LogDebug(exceptionMessage);
+                lastExceptionMessage = exceptionMessage;
+            }
         }
     }
+    private static string lastExceptionMessage = "";
 }

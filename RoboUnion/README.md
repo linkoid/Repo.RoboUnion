@@ -1,7 +1,7 @@
 # Robo Union
-**Work in Progress**
-
 Provides options for adjusting the maximum number of players in a room.
+
+Works with the REPO Beta v0.1.2.22_beta
 
 ## Bugs / Contact
 The fastest way to contact me is via Discord.
