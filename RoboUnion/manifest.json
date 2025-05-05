@@ -1,8 +1,8 @@
 {
  "name": "RoboUnion",
- "version_number": "0.4.0",
+ "version_number": "0.4.2",
  "website_url": "https://github.com/linkoid/Repo.RoboUnion",
- "description": "Provides options for adjusting the maximum number of players in a room",
+ "description": "[MorePlayers] Allows more players to play at once by providing options for adjusting the maximum number of players in a room.",
  "dependencies": [
   "BepInEx-BepInExPack-5.4.2100"
  ]
