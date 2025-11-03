@@ -8,7 +8,7 @@ namespace Linkoid.Repo.RoboUnion;
 internal record class ConfigModel(ConfigFile ConfigFile)
 {
     internal const string GeneralSection = "General";
-    public readonly ConfigEntry<int> MaxPlayers = ConfigFile.Bind(GeneralSection, "MaxPlayers", 10);
+    public readonly ConfigEntry<int> MaxPlayers = ConfigFile.Bind(GeneralSection, "MaxPlayers", 15);
 
     internal const string DeveloperSection = "Developer";
     public readonly ConfigEntry<bool> LogMessagesPerSecond = ConfigFile.Bind(DeveloperSection, "LogMessagesPerSecond", false);
