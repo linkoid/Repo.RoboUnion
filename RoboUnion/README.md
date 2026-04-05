@@ -1,14 +1,62 @@
 # Robo Union
-Protecting Semibot Rights Since 2024
+
+Protecting Semibot Rights Since 2025
+
+**(And it still works on REPO v0.4.0)**
 
 ## About
+
 Allows more players to play at once by providing options for adjusting the maximum number of players in a room.
 
-Only the Host needs to have RoboUnion installed.
+**Features:**
 
-Works with REPO v0.1.2 and v0.1.2.22_beta
+- Increase or decrease player count (MorePlayers)
+- Works with both public and private lobbies
+- Only the Host needs to have RoboUnion installed
+
+## Supported Versions
+
+| Mod Version | Game Version    |
+| ----------- | --------------- |
+| v0.6.0      | v0.4.x          |
+| v0.5.0      | v0.1.x - v0.3.x |
+
+## Installation
+
+1. Use a mod manager
+   - I **highly** recommend using [Gale Mod Manager](https://thunderstore.io/c/repo/p/Kesomannen/GaleModManager/).
+     It's way faster than other mod managers, has no ads, and doesn't require any third-party apps.
+   - Other mod managers work as well
+2. Select the game R.E.P.O.
+3. Add the RoboUnion mod.
+4. Launch the game!
+
+## Configuration (Changing Max Players)
+
+RoboUnion can be configured to change the max number of players.
+
+**Method 1 - Configure With Mod Manager:**
+
+1. Run the game with the mod installed at least once.
+2. In the mod manager, go to the 'mod config editor' tab.
+3. Find and click on 'RoboUnion.cfg' or 'Linkoid.Repo.RoboUnion.cfg'
+4. Change the settings under the 'General' header.
+
+**Method 2 - Configure in-game with REPOConfig:**
+
+1. Install the [REPOConfig mod](https://thunderstore.io/c/repo/p/nickklmao/REPOConfig/).
+2. Launch the game.
+3. In the 'Mods' setting menu, find RoboUnion.
+4. Change the settings under the 'General' header.
+
+**Method 3 - Configure directly via config file (not recommended):**
+
+1. Run the game with the mod installed at least once.
+2. In file explorer, navigate to `{GAME_OR_PROFILE_FOLDER}/BepInEx/config/Linkoid.Repo.RoboUnion.cfg`.
+3. Open the config file a text editor and change the values under the 'General' header directly.
 
 ## Troubleshooting and Debugging
+
 If the configured player limit is greater than the max players permitted by the servers,
 an error message will be displayed and the player cap will automatically be adjusted for that session.
 
@@ -18,10 +66,12 @@ Technical users may use these tools to test for and remove mods that may cause i
 leading to instability.
 
 ## Bugs / Contact
+
 The fastest way to contact me is via Discord.
-You can find me on the [R.E.P.O. Modding Discord](https://discord.gg/repomodding) [RoboUnion Thread](https://discord.com/channels/1344557689979670578/1368823239643758682),
+You can find me on the [R.E.P.O. Modding Discord](https://discord.gg/vPJtKhYAFe) in the [RoboUnion Thread](https://discord.com/channels/1344557689979670578/1368823239643758682),
 or in my [Deja Drift Discord Server](https://discord.gg/yKwt2AWcGF).
 
 ## Credits
-* Icon by @Lordfirespeed and @linkoid on Discord
-* Shoutout to Zelofi who made the original [MorePlayers](https://github.com/zelofi/MorePlayers) mod which lifted the 6 player cap in the early REPO days.
+
+- Icon by @Lordfirespeed and @linkoid on Discord
+- Shoutout to Zelofi who made the original [MorePlayers](https://github.com/zelofi/MorePlayers) mod which lifted the 6 player cap in the early REPO days.

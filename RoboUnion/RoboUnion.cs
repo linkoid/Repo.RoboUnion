@@ -1,4 +1,5 @@
-﻿using BepInEx;
+﻿using System;
+using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
@@ -25,6 +26,10 @@ public class RoboUnion : BaseUnityPlugin
         this.gameObject.hideFlags = HideFlags.HideAndDontSave;
 
         ConfigModel = new ConfigModel(this.Config);
+        ConfigModel.MaxPlayers.SettingChanged += (sender, args) => {
+            int _maxPlayers = ConfigModel.MaxPlayers.Value > 0 ? ConfigModel.MaxPlayers.Value : GameManager.maxPlayersDefault;
+            if(GameManager.instance) GameManager.instance.SetMaxPlayers(_maxPlayers);
+        };
 
         Harmony ??= new Harmony(Info.Metadata.GUID);
         Harmony.PatchAll();
