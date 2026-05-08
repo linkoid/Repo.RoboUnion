@@ -9,7 +9,7 @@ internal static class GameManagerPatches
     [HarmonyPostfix]
     private static void GameManager_Awake(GameManager __instance)
     {
-	    if(__instance != GameManager.instance || RoboUnion.ConfigModel.MaxPlayers.Value <= 0) return;
+	    if (RoboUnion.ConfigModel.MaxPlayers.Value <= 0) return;
 	    int _maxPlayers = RoboUnion.ConfigModel.MaxPlayers.Value > 0 ? RoboUnion.ConfigModel.MaxPlayers.Value : GameManager.maxPlayersDefault;
 	    __instance.SetMaxPlayers(_maxPlayers);
     }
