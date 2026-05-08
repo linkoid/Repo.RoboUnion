@@ -36,7 +36,9 @@ internal static class NetworkConnectPatches
         RoboUnion.Instance.Harmony!.Patch(meth_OnJoinRoomFailed, prefix);
     }
 
-    [HarmonyTranspiler, HarmonyPatch(nameof(NetworkConnect.TryJoiningRoom))]
+    [HarmonyTranspiler]
+    [HarmonyPatch(nameof(NetworkConnect.TryJoiningRoom))]
+    [HarmonyPatch(nameof(NetworkConnect.OnConnectedToMaster))]
     static IEnumerable<CodeInstruction> TryJoiningRoom_Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         CodeMatcher head = new(instructions);
@@ -57,6 +59,7 @@ internal static class NetworkConnectPatches
 
         return head.InstructionEnumeration();
     }
+
 
     internal static int TryJoiningRoom_GetMaxPlayers()
     {

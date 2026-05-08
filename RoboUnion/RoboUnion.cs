@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Linkoid.Repo.RoboUnion;
 
-[BepInPlugin("Linkoid.Repo.RoboUnion", "RoboUnion", "0.4")]
+[BepInPlugin("Linkoid.Repo.RoboUnion", "RoboUnion", "0.5")]
 public class RoboUnion : BaseUnityPlugin
 {
     internal static RoboUnion Instance { get; private set; } = null!;
