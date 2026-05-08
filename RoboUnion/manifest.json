@@ -1,6 +1,6 @@
 {
  "name": "RoboUnion",
- "version_number": "0.6.0",
+ "version_number": "0.6.1",
  "website_url": "https://github.com/linkoid/Repo.RoboUnion",
  "description": "[MorePlayers] Allows more players to play at once by providing options for adjusting the maximum number of players in a room.",
  "dependencies": [

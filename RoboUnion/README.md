@@ -13,6 +13,7 @@ Allows more players to play at once by providing options for adjusting the maxim
 - Increase or decrease player count (MorePlayers)
 - Works with both public and private lobbies.
 - Only the Host needs to have RoboUnion installed
+- ~~Fallback handling when MaxPlayers is set higher than permitted by the game servers.~~ (Semiwork built this into the base game now. W devs.)
 
 ## Supported Versions
 
@@ -74,4 +75,5 @@ or in my [Deja Drift Discord Server](https://discord.gg/yKwt2AWcGF).
 ## Credits
 
 - Icon by @Lordfirespeed and @linkoid on Discord
+- @1A3 for drafting part of the RoboUnion v0.6 update
 - Shoutout to Zelofi who made the original [MorePlayers](https://github.com/zelofi/MorePlayers) mod which lifted the 6 player cap in the early REPO days.

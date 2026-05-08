@@ -16,6 +16,9 @@ public class RoboUnion : BaseUnityPlugin
     internal static ConfigModel ConfigModel { get; private set; } = null!;
     private ManualLogSource _logger => base.Logger;
     internal Harmony? Harmony { get; set; }
+    
+    /// <summary> Feature flag for REPO v0.4 patches </summary>
+    internal static bool UseV04MaxPlayersLogic => GameManagerPatches.method_SetMaxPlayers != null;
 
     private void Awake()
     {
@@ -26,10 +29,7 @@ public class RoboUnion : BaseUnityPlugin
         this.gameObject.hideFlags = HideFlags.HideAndDontSave;
 
         ConfigModel = new ConfigModel(this.Config);
-        ConfigModel.MaxPlayers.SettingChanged += (sender, args) => {
-            int _maxPlayers = ConfigModel.MaxPlayers.Value > 0 ? ConfigModel.MaxPlayers.Value : GameManager.maxPlayersDefault;
-            if(GameManager.instance) GameManager.instance.SetMaxPlayers(_maxPlayers);
-        };
+        ConfigModel.MaxPlayers.SettingChanged += OnMaxPlayersChanged;
 
         Harmony ??= new Harmony(Info.Metadata.GUID);
         Harmony.PatchAll();
@@ -41,5 +41,14 @@ public class RoboUnion : BaseUnityPlugin
     {
         Logger.LogInfo($"Creating {nameof(PhotonWatchdog)}");
         var photonWatchdog = new GameObject(nameof(PhotonWatchdog), typeof(PhotonWatchdog));
+    }
+
+    private void OnMaxPlayersChanged(object sender, EventArgs args)
+    {
+        int maxPlayers = ConfigModel.MaxPlayers.Value > 0 ? ConfigModel.MaxPlayers.Value : GameManager.maxPlayersDefault;
+        if (GameManager.instance)
+        {
+            GameManager.instance.SetMaxPlayersSafe(maxPlayers);
+        }
     }
 }
