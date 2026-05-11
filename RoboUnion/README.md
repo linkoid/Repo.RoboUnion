@@ -1,12 +1,12 @@
-# Robo Union
+# Robo Union *(More Players)*
 
 Protecting Semibot Rights Since 2025
 
-**(And it still works on REPO v0.4.0)**
+*(Updated to works with REPO v0.4.0)*
 
 ## About
 
-Allows more players to play at once by providing options for adjusting the maximum number of players in a room.
+The Robo Union empowers YOU 🫵 to safely increase (or decrease) the maximum number of workers on a R.E.P.O. team. Leave no Semibot behind!
 
 **Features:**
 
@@ -15,19 +15,23 @@ Allows more players to play at once by providing options for adjusting the maxim
 - Only the Host needs to have RoboUnion installed
 - ~~Fallback handling when MaxPlayers is set higher than permitted by the game servers.~~ (Semiwork built this into the base game now. W devs.)
 
+**Limitations:**
+
+By default, this mod increases the lobby size to 10 players which is stable on most setups. This can be configured to any number, but REPO's photon servers will not allow lobbies with more than 20 players.
+
 ## Supported Versions
 
 | Mod Version | Game Version    |
 | ----------- | --------------- |
-| v0.6.0      | v0.4.x          |
+| v0.6.0+     | v0.4.x          |
 | v0.5.0      | v0.1.x - v0.3.x |
 
 ## Installation
 
 1. Use a mod manager
-  - I **highly** recommend using [Gale Mod Manager](https://thunderstore.io/c/repo/p/Kesomannen/GaleModManager/).
-    It's way faster than other mod managers, has no ads, and doesn't require any third-party apps.
-  - Other mod managers work as well
+    - I **highly** recommend using [Gale Mod Manager](https://thunderstore.io/c/repo/p/Kesomannen/GaleModManager/).
+    It's faster than other mod managers, has no ads, and doesn't require any third-party apps.
+    - Other mod managers work as well.
 2. Select the game R.E.P.O.
 3. Add the RoboUnion mod.
 4. Launch the game!
@@ -54,7 +58,7 @@ RoboUnion can be configured to change the max number of players.
 
 1. Run the game with the mod installed at least once.
 2. In file explorer, navigate to `{GAME_OR_PROFILE_FOLDER}/BepInEx/config/Linkoid.Repo.RoboUnion.cfg`.
-3. Open the config file a text editor and change the values under the 'General' header directly.
+3. Open the config file in a text editor and change the values under the 'General' header directly.
 
 ## Troubleshooting and Debugging
 
@@ -63,8 +67,7 @@ an error message will be displayed and the player cap will automatically be adju
 
 You may encounter stability issues with a large number of players.
 Some debug tools for viewing network traffic are provided in the config.
-Technical users may use these tools to test for and remove mods that may cause increased traffic,
-leading to instability.
+Technical users may use these tools to test for and remove mods that may cause increased traffic, leading to instability.
 
 ## Bugs / Contact
 

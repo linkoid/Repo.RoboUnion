@@ -13,8 +13,8 @@
   <PropertyGroup>
     <Company>linkoid</Company>
     <Product>RoboUnion</Product>
-    <Version>0.6.1</Version>
-    <Description>[MorePlayers] Allows more players to play at once by providing options for adjusting the maximum number of players in a room.</Description>
+    <Version>0.6.2</Version>
+    <Description>[MorePlayers] The Robo Union empowers YOU 🫵 to safely increase (or decrease) the maximum number of workers on a R.E.P.O. team. Leave no Semibot behind!</Description>
     <RepositoryUrl>https://github.com/linkoid/Repo.RoboUnion</RepositoryUrl>
     <ThunderPackagingPath>obj/dist/</ThunderPackagingPath>
     <ThunderPackagingRoot>bin/$(Configuration)/</ThunderPackagingRoot>

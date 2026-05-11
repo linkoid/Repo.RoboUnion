@@ -1,3 +1,4 @@
+* 0.6.2 - Description and README updates 
 * 0.6   - Support for REPO v0.4.0
 * 0.5   - Added support for public lobbies and updated README to be more beginner friendly.
 * 0.4.1 - Update logo and README
