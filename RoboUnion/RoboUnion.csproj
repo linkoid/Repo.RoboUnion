@@ -4,9 +4,20 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>11</LangVersion>
     <Nullable>enable</Nullable>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
     <Authors>linkoid</Authors>
-    <Version>0.6.0</Version>
     <RootNamespace>Linkoid.Repo.RoboUnion</RootNamespace>
+  </PropertyGroup>
+
+  <!-- Thunderstore Metadata -->
+  <PropertyGroup>
+    <Company>linkoid</Company>
+    <Product>RoboUnion</Product>
+    <Version>0.6.1</Version>
+    <Description>[MorePlayers] Allows more players to play at once by providing options for adjusting the maximum number of players in a room.</Description>
+    <RepositoryUrl>https://github.com/linkoid/Repo.RoboUnion</RepositoryUrl>
+    <ThunderPackagingPath>obj/dist/</ThunderPackagingPath>
+    <ThunderPackagingRoot>bin/$(Configuration)/</ThunderPackagingRoot>
   </PropertyGroup>
 
   <!-- Add Package Sources -->
@@ -23,40 +34,52 @@
     <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
     <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1" PrivateAssets="all" IncludeAssets="build" />
     <PackageReference Include="Linkoid.Repo.Plugin.Build" Version="*" PrivateAssets="all" />
+    <PackageReference Include="SubHobo.Thunderstore.BuildTargets" Version="1.1.0" PrivateAssets="all" />
 
     <PackageReference Include="BepInEx.Core" Version="5.*" ExcludeAssets="runtime" />
     <PackageReference Include="UnityEngine.Modules" Version="2022.3.21" IncludeAssets="compile" PrivateAssets="all"/>
     <PackageReference Include="R.E.P.O.GameLibs.Steam" Version="*-*" PrivateAssets="all" />
   </ItemGroup>
 
-  <!-- <ItemGroup Condition="$(CI) != 'true'">
-    <Reference Include="Assembly-CSharp" Publicize="true">
-      <HintPath>E:/Unity Projects/clean/Builds/Windows/REPO_Data/Managed/Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Photon3Unity3D">
-      <HintPath>E:/Unity Projects/clean/Builds/Windows/REPO_Data/Managed/Photon3Unity3D.dll</HintPath>
-    </Reference>
-    <Reference Include="PhotonRealtime">
-      <HintPath>E:/Unity Projects/clean/Builds/Windows/REPO_Data/Managed/PhotonRealtime.dll</HintPath>
-    </Reference>
-    <Reference Include="PhotonUnityNetworking">
-      <HintPath>E:/Unity Projects/clean/Builds/Windows/REPO_Data/Managed/PhotonUnityNetworking.dll</HintPath>
-    </Reference>
+  <!-- Thunderstore Dependencies -->
+  <ItemGroup>
+    <ThunderDependency Include="BepInEx-BepInExPack-5.4.2100" />
   </ItemGroup>
-
-  <ItemGroup Condition="$(CI) == 'true'">
-    <PackageReference Include="R.E.P.O.GameLibs.Steam" Version="*-*" PrivateAssets="all" />
-  </ItemGroup> -->
 
   <PropertyGroup>
     <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="thunderstore.toml" />
+  </ItemGroup>
 
   <!-- prevent referenced assemblies from being copied to output folders -->
   <Target Name="ClearReferenceCopyLocalPaths" AfterTargets="ResolveAssemblyReferences">
     <ItemGroup>
       <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)"/>
     </ItemGroup>
+  </Target>
+
+  <Target Name="PublishToThunderstore" DependsOnTargets="Build;PackageForThunderstore">
+    <ItemGroup>
+      <_ThunderstoreToml Include="@(None)" Condition="'%(Filename)%(Extension)' == 'thunderstore.toml'" KeepDuplicates="false">
+        <EscapedFullPath>"$([MSBuild]::Escape('%(FullPath)'))"</EscapedFullPath>
+      </_ThunderstoreToml>
+      <_ThunderstoreZip Include="$(ThunderPackagingRoot)$(ThunderPackageName).zip" KeepDuplicates="false" />
+      <_ThunderstoreZip Update="@(_ThunderstoreZip)">
+        <EscapedFullPath>"$([MSBuild]::Escape('%(FullPath)'))"</EscapedFullPath>
+      </_ThunderstoreZip>
+    </ItemGroup>
+    <Error Condition=" '@(_ThunderstoreToml)' == '' " Text="No thunderstore.toml found" />
+    <Error Condition=" '@(_ThunderstoreToml->Count())' != '1' " Text="Multiple thunderstore.toml files found" />
+    <Error Condition=" '@(_ThunderstoreZip)' == '' " Text="No thunderstore.zip found" />
+    <Error Condition=" '@(_ThunderstoreZip->Count())' != '1' " Text="Multiple thunderstore.zip files found" />
+    <Message Text="dotnet tcli publish --config-path @(_ThunderstoreToml->'%(EscapedFullPath)') --file @(_ThunderstoreZip->'%(EscapedFullPath)')" 
+             Importance="High" />
+    <Exec Command="dotnet tcli publish --config-path @(_ThunderstoreToml->'%(EscapedFullPath)') --file @(_ThunderstoreZip->'%(EscapedFullPath)')"
+          StandardOutputImportance="High"
+          CustomErrorRegularExpression="ERROR:" />
   </Target>
 
 </Project>

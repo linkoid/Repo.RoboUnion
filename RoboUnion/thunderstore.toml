@@ -1,0 +1,11 @@
+[general]
+repository = "https://thunderstore.io"
+
+[package]
+namespace = "linkoid"
+
+[publish]
+communities = ["repo"]
+
+[publish.categories]
+repo = [ "mods", "misc", "serverside" ]
