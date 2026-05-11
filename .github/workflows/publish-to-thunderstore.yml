@@ -17,6 +17,9 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 8.0.x
+          cache: true
+      - name: Install Tools
+        run: dotnet tool restore
       - name: Publish to Thunderstore
         run: dotnet build -t:PublishToThunderstore -c Release -v d
         env:
