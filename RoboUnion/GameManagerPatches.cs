@@ -47,6 +47,7 @@ internal static class GameManagerPatches
         // in versions of the game without this method.
         static void SetMaxPlayersUnsafe(GameManager __instance, int target)
         {
+            __instance.matchmakingMaxPlayers = false;
             __instance.maxPlayersPhoton = target;
             __instance.SetMaxPlayers(target);
         }
